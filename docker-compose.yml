@@ -1,0 +1,38 @@
+version: "3.1"
+
+services:
+
+  localstack:
+      container_name: "${LOCALSTACK_DOCKER_NAME-localstack}"
+      image: localstack/localstack
+      hostname: localstack
+      networks:
+        - localstack-net
+      ports:
+        - "4564-4599:4564-4599"
+        - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
+      environment:
+        - SERVICES=s3,sqs,lambda,cloudformation,sts,iam,cloudwatch,apigateway,events,dynamodb
+        - DEBUG=1
+        - DATA_DIR=/tmp/localstack/data
+        - PORT_WEB_UI=8080
+        - LAMBDA_EXECUTOR=docker-reuse
+        - LAMBDA_REMOTE_DOCKER=false
+        - LAMBDA_REMOVE_CONTAINERS=true
+        - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+        - DOCKER_HOST=unix:///var/run/docker.sock
+        - HOST_TMP_FOLDER=${TMPDIR}
+      volumes:
+        - ./data:/tmp/localstack
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        # Enabling this directory ensures that in the event of restarts or stack failures, your persisted data is not lost.
+        - ./bin:/docker-entrypoint-initaws.d
+
+# volumes:
+#   postgres_data:
+
+networks:
+  localstack-net:
+    external: false
+    driver: bridge
+    name: localstack-net
