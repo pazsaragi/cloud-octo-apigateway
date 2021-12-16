@@ -6,6 +6,10 @@ on:
       - main
   pull_request:
 
+env:
+  SECRET_KEY:  ${{ secrets.SECRET_KEY }}
+  ALLOWED_HOSTS:  ${{ secrets.ALLOWED_HOSTS }}
+
 jobs:
   test:
     name: "Test"
