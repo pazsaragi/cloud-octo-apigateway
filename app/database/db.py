@@ -24,12 +24,10 @@ class DynamoDB(BaseDatabase):
         super().__init__()
         if LOCALSTACK_HOSTNAME:
             dynamodb_endpoint = "http://%s:4566" % LOCALSTACK_HOSTNAME
-            print(dynamodb_endpoint)
-            self._dynamodb = boto3.client("dynamodb", endpoint_url=dynamodb_endpoint)
-            print(self._dynamodb.list_tables())
+            self._dynamodb = boto3.resource("dynamodb", endpoint_url=dynamodb_endpoint)
         else:
-            self._dynamodb = boto3.client("dynamodb")
-        self._table = table_name
+            self._dynamodb = boto3.resource("dynamodb")
+        self._table = self._dynamodb.Table(table_name)
 
     def get_table(self):
         return self._table
@@ -40,18 +38,24 @@ class DynamoDB(BaseDatabase):
     def create(self, data):
         """
         DynamoDB put item.
+
+        Expects data to be json serialized.
         """
-        print(data, self.get_table())
-        return self._dynamodb.put_item(
-            TableName=self.get_table(),
-            Item={"pk": {"S": "h"}, "sk": {"S": "h"}, "email": {"S": "h"}},
+        return self.get_table().put_item(
+            Item=data,
         )
 
     def get(self, key, value):
         """
         DynamoDB get item.
         """
-        return self._table.get_item(Key={key: value})
+        return self.get_table().get_item(Key={key: value})
 
     def query(self):
         return super().query()
+
+    def delete(self, pk_key, pk_value, sk_key, sk_value):
+        """
+        DynamoDB delete item.
+        """
+        return self.get_table().delete_item(Key={pk_key: pk_value, sk_key: sk_value})

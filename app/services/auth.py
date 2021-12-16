@@ -1,5 +1,5 @@
 from app.models.user import CreateUserInput, User
-from app.database.auth import AuthDb
+from app.database.user import UserDb
 from app.settings import SECRET_KEY, ALGORITHM
 from typing import Optional
 from jose import jwt
@@ -10,7 +10,7 @@ from app.logger import get_logger
 
 
 class AuthService:
-    def __init__(self, db: AuthDb = Depends()) -> None:
+    def __init__(self, db: UserDb = Depends()) -> None:
         self.db = db
         self.logger = get_logger("auth-service")
 
@@ -21,7 +21,9 @@ class AuthService:
         except Exception as e:
             self.logger.error(f"LogReference=AUTHSERVICE00C1, Error: {e}")
 
-    def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    def create_access_token(
+        self, data: dict, expires_delta: Optional[timedelta] = None
+    ):
         """
         Encodes a JWT to be used for authentication.
         """
@@ -54,7 +56,7 @@ class AuthService:
             self.logger.error(f"LogReference=AUTHSERVICE00PW2, Error: {e}")
 
     def authenticate_user(self, email: str, password: str) -> User or bool:
-        user = self.db.query(email)
+        user = self.db.get_user_by_email(email)
         if not user:
             return False
         if not self.verify_password(password, user.password):

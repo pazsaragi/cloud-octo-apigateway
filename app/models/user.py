@@ -19,6 +19,11 @@ class CreateUserInput(BaseModel):
     password: str
 
 
+class DeleteUserInput(BaseModel):
+    pk: str
+    sk: str
+
+
 class GetUserInput(BaseModel):
     pk: str
     email: str

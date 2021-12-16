@@ -2,4 +2,4 @@
 
 ## Single Process per container
 
-See (here)[https://fastapi.tiangolo.com/deployment/docker/] for more details.
+See [here](https://fastapi.tiangolo.com/deployment/docker/) for more details.

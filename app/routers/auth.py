@@ -3,13 +3,15 @@ from app.settings import ACCESS_TOKEN_EXPIRE_MINUTES
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.auth import LoginInput, Token
 from app.services.auth import AuthService
-
+from app.logger import get_logger
 
 router = APIRouter(
     prefix="/auth",
     tags=["auth"],
     responses={404: {"description": "Not found"}},
 )
+
+logger = get_logger("auth-router")
 
 # class AuthHandler:
 #     def __init__(self) -> None:
@@ -28,7 +30,7 @@ router = APIRouter(
 @router.post("/token", response_model=Token)
 async def login_for_access_token(data: LoginInput, service: AuthService = Depends()):
     try:
-        user = service.authenticate_user(data.username, data.password)
+        user = service.authenticate_user(data.email, data.password)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -40,5 +42,12 @@ async def login_for_access_token(data: LoginInput, service: AuthService = Depend
             data={"sub": user.email}, expires_delta=access_token_expires
         )
         return {"access_token": access_token, "token_type": "bearer"}
+    except HTTPException as e:
+        raise e
     except Exception as e:
-        print(e)
+        logger.error(f"LogReference=AUTH-ROUTER-TOKEN-0001, Error={e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )

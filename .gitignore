@@ -132,7 +132,7 @@ dmypy.json
 .env
 .env.dev
 .env.prod
-.env.docker
+.env.export
 *.secrets
 *.sqlite3
 bin
