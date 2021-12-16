@@ -4,11 +4,11 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_token(create_test_user):
-    [email, password] = create_test_user
+def test_token(create_and_destroy_user):
+    _, email, password = create_and_destroy_user
     response = client.post(
         "/auth/token",
-        json={"mail": email, "password": password},
+        json={"email": email, "password": password},
         headers={"content-type": "application/json"},
     )
     assert response.status_code == 200

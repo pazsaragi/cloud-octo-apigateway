@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from app.main import app
-from app.tests.conftest import destroy_user_after_use
+from app.tests.conftest import delete_user_if_exists, destroy_user_after_use
 
 client = TestClient(app)
 
@@ -8,6 +8,7 @@ client = TestClient(app)
 def test_create_user():
     test_email = "test@test.com"
     test_password = "secret"
+    delete_user_if_exists(test_email)
     response = client.post(
         "/users/",
         json={"email": test_email, "password": test_password},

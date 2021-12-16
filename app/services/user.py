@@ -81,7 +81,7 @@ class UserService:
             self.logger.info(
                 "LogReference=USER-SERVICE-DELETEUSER-0002, Message=Deleting user"
             )
-            self.db.delete(user.pk, user.sk)
+            self.db.delete("pk", user.pk, "sk", user.sk)
             return True
         except Exception as e:
             self.logger.error(f"LogReference=USER-SERVICE-DELETEUSER-0003, Error={e}")

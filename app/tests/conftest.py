@@ -46,6 +46,12 @@ def create_and_destroy_user(create_test_user):
     destroy_user_after_use(pk, test_email)
 
 
+def delete_user_if_exists(email):
+    user = user_svc.get_user(email)
+    if user:
+        destroy_user_after_use(pk=user.pk, sk=user.sk)
+
+
 def destroy_user_after_use(pk, sk):
     delete_user_input = DeleteUserInput(pk=pk, sk=sk)
-    user_svc.delete_user(delete_user_input)
+    asyncio.run(user_svc.delete_user(delete_user_input))
