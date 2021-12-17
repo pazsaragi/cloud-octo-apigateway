@@ -84,25 +84,25 @@ jobs:
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          
+
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-      - name: Render Amazon ECS task definition
-        id: render-web-container
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          container-name: $CONTAINER_NAME
-          environment-variables: |
-            - name: SECRET_KEY
-              value: $SECRET_KEY
-            - name: ALLOWED_HOSTS
-              value: $ALLOWED_HOSTS
+      # - name: Render Amazon ECS task definition
+      #   id: render-web-container
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   with:
+      #     task-definition: task-definition.json
+      #     container-name: $CONTAINER_NAME
+      #     environment-variables: |
+      #       - name: SECRET_KEY
+      #         value: $SECRET_KEY
+      #       - name: ALLOWED_HOSTS
+      #         value: $ALLOWED_HOSTS
        
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+      # - name: Deploy Amazon ECS task definition
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   with:
+      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+      #     service: ${{ env.ECS_SERVICE }}
+      #     cluster: ${{ env.ECS_CLUSTER }}
+      #     wait-for-service-stability: true
