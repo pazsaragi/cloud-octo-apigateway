@@ -140,3 +140,6 @@ data
 .vscode
 
 docker-compose.prod.yml
+
+scratch
+node_modules
