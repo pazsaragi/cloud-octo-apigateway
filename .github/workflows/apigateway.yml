@@ -21,7 +21,7 @@ env:
 
 jobs:
   cicd:
-    name: "Ci/CD"
+    name: "CI/CD"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -35,12 +35,12 @@ jobs:
       - name: Install Poetry
         uses: Gr1N/setup-poetry@v7
 
-      - name: Load cached virtual environment
-        id: cached-poetry-dependencies
-        uses: actions/cache@v2
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock')}}
+      # - name: Load cached virtual environment
+      #   id: cached-poetry-dependencies
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: .venv
+      #     key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock')}}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
