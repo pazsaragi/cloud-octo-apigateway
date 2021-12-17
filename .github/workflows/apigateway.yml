@@ -79,7 +79,7 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
 
-          docker build -t ${{ env.CONTAINER_NAME }} .
+          docker build -t ${{ env.ECR_REPOSITORY }} .
 
           docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
 
