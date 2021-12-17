@@ -20,8 +20,8 @@ env:
   # containerDefinitions section of your task definition
 
 jobs:
-  test:
-    name: "Test"
+  cicd:
+    name: "Ci/CD"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -35,15 +35,15 @@ jobs:
       - name: Install Poetry
         uses: Gr1N/setup-poetry@v7
 
-      # - name: Load cached virtual environment
-      #   id: cached-poetry-dependencies
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: .venv
-      #     key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock')}}
+      - name: Load cached virtual environment
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock')}}
 
       - name: Install dependencies
-        # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
 
       - name: Run tests
@@ -77,6 +77,9 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Check files
+        run: ls -R
 
       - name: Render Amazon ECS task definition
         id: render-web-container
