@@ -96,7 +96,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
           environment-variables: |
             - name: SECRET_KEY
-              value: ${{ env.SECRET_KEY }}
+              value: ${{ secrets.SECRET_KEY }}
             - name: ALLOWED_HOSTS
               value: ${{ env.ALLOWED_HOSTS }}
             - name: LOG_GROUP_NAME
