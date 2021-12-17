@@ -7,9 +7,9 @@
                 "logDriver": "awslogs",
                 "secretOptions": null,
                 "options": {
-                    "awslogs-group": "${LOG_GROUP_NAME}",
+                    "awslogs-group": "cloud-octo-logs",
                     "awslogs-region": "${REGION}",
-                    "awslogs-stream-prefix": "${LOG_STREAM_NAME}"
+                    "awslogs-stream-prefix": "cloud-octo-logs-stream"
                 }
             },
             "entryPoint": null,
