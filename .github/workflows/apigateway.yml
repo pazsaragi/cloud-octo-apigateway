@@ -82,7 +82,7 @@ jobs:
         run: ls -R | grep "task-definition.json"
 
       - name: Render Amazon ECS task definition
-        id: render-web-container
+        id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ./task-definition.json
