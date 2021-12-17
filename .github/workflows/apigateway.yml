@@ -95,16 +95,11 @@ jobs:
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
           environment-variables: |
-            - name: SECRET_KEY
-              value: ${{ secrets.SECRET_KEY }}
-            - name: ALLOWED_HOSTS
-              value: ${{ env.ALLOWED_HOSTS }}
-            - name: LOG_GROUP_NAME
-              value: ${{ env.LOG_GROUP_NAME }}
-            - name: LOG_STREAM_NAME
-              value: ${{ env.LOG_STREAM_NAME }}
-            - name: REGION
-              value: ${{ env.AWS_DEFAULT_REGION }}
+              SECRET_KEY=${{ env.SECRET_KEY }}
+              ALLOWED_HOSTS=${{ env.ALLOWED_HOSTS }}
+              LOG_GROUP_NAME=${{ env.LOG_GROUP_NAME }}
+              LOG_STREAM_NAME=${{ env.LOG_STREAM_NAME }}
+              REGION=${{ env.AWS_DEFAULT_REGION }}
             
        
       # - name: Deploy Amazon ECS task definition
