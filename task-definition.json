@@ -72,10 +72,6 @@
     "placementConstraints": [],
     "memory": "512",
     "taskRoleArn": null,
-    "compatibilities": [
-        "EC2",
-        "FARGATE"
-    ],
     "family": "apigateway",
     "pidMode": null,
     "requiresCompatibilities": [
@@ -84,8 +80,6 @@
     "networkMode": "awsvpc",
     "runtimePlatform": null,
     "cpu": "256",
-    "revision": 8,
-    "status": "ACTIVE",
     "inferenceAccelerators": null,
     "proxyConfiguration": null,
     "volumes": []
