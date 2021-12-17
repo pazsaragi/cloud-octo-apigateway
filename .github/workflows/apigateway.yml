@@ -79,13 +79,13 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
 
-          docker build -t ${{ env.ECR_REPOSITORY }} .
+          docker build -t $ECR_REPOSITORY .
 
-          docker tag ${{ env.ECR_REPOSITORY }}:$IMAGE_TAG $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-          echo "::set-output name=image::$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG"
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Render Amazon ECS task definition
         id: render-web-container
@@ -100,9 +100,9 @@ jobs:
             - name: ALLOWED_HOSTS
               value: $ALLOWED_HOSTS
             - name: LOG_GROUP_NAME
-              value: $LOG_GROUP_NAME
+              value: ${{ env.LOG_GROUP_NAME }}
             - name: LOG_STREAM_NAME
-              value: $LOG_STREAM_NAME
+              value: ${{ env.LOG_STREAM_NAME }}
             - name: REGION
               value: ${{ env.AWS_DEFAULT_REGION }}
             
